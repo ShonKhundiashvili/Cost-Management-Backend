@@ -2,16 +2,16 @@
 //Netanel, Yomtovian, 207498700,
 //Chen, Bello, 315129015
 
-var express = require('express');
-var { Cost } = require('../models/database');
+const express = require('express');
+const { Cost } = require('../models/database');
 const url = require('url');
-var router = express.Router();
+const router = express.Router();
 
 router.get(`/`, function (req, res) {
   const query = url.parse(req.url, true).query;
   const year = query.year;
   const month = query.month;
-  const userId = query.userId;
+  const user_id = query.user_id;
 
   //After this code costs will contain the documents that match the query
   async function findCosts() {
@@ -19,7 +19,7 @@ router.get(`/`, function (req, res) {
       const costs = await Cost.find({
         year: year,
         month: month,
-        userId: userId,
+        user_id: user_id,
       });
       const report = {};
       costs.forEach((cost) => {

@@ -3,6 +3,7 @@
 //Chen, Bello, 315129015
 
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 mongoose.set('strictQuery', true);
 
 const connectionString =
@@ -32,27 +33,48 @@ const userSchema = new mongoose.Schema({
 });
 
 const costSchema = new mongoose.Schema({
-  userId: Number,
-  day: Number,
-  month: Number,
-  year: Number,
-  itemId: Number,
+  user_id: Number,
+  day: {
+    type: Number,
+    required: true,
+    validate: [validatorDayOfMonth, 'Allowed session values are 1 to 31'],
+  },
+  month: {
+    type: Number,
+    required: true,
+    validate: [validatorMonths, 'Allowed session values are 1 to 12'],
+  },
+  year: {
+    type: Number,
+    required: true,
+    validate: [validatorYear, 'Allowed session values are 1900 - 2023'],
+  },
+  id: {
+    type: String,
+    index: true,
+    required: true,
+    unique: true,
+    default: () => crypto.randomUUID(),
+  },
   description: String,
   category: {
     type: String,
-    enum: [
-      'food',
-      'health',
-      'housing',
-      'sport',
-      'education',
-      'transportation',
-      'other',
-    ],
+    enum: ['food', 'health', 'housing', 'education', 'transportation', 'other'],
   },
   sum: Number,
-  totalCost: Number,
 });
+
+function validatorDayOfMonth(v) {
+  return v >= 1 && v <= 31;
+}
+
+function validatorMonths(v) {
+  return v >= 1 && v <= 12;
+}
+
+function validatorYear(v) {
+  return v >= 1900 && v <= 2023;
+}
 
 //Define user and cost models
 const User = mongoose.model('User', userSchema);
@@ -61,8 +83,8 @@ const Cost = mongoose.model('Cost', costSchema);
 //Creating a single document of a user Moshe Israeli
 const user = new User({
   id: '123123',
-  firstName: 'Moshe',
-  lastName: 'Israeli',
+  first_name: 'Moshe',
+  last_name: 'Israeli',
   birthday: new Date(1990, 0, 11),
 });
 
