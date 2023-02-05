@@ -36,17 +36,17 @@ const costSchema = new mongoose.Schema({
   user_id: Number,
   day: {
     type: Number,
-    required: true,
+    required: false,
     validate: [validatorDayOfMonth, 'Allowed session values are 1 to 31'],
   },
   month: {
     type: Number,
-    required: true,
+    required: false,
     validate: [validatorMonths, 'Allowed session values are 1 to 12'],
   },
   year: {
     type: Number,
-    required: true,
+    required: false,
     validate: [validatorYear, 'Allowed session values are 1900 - 2023'],
   },
   id: {
@@ -64,6 +64,7 @@ const costSchema = new mongoose.Schema({
   sum: Number,
 });
 
+//The functions for validation
 function validatorDayOfMonth(v) {
   return v >= 1 && v <= 31;
 }
@@ -75,6 +76,15 @@ function validatorMonths(v) {
 function validatorYear(v) {
   return v >= 1900 && v <= 2023;
 }
+
+// the 'pre' save the day, month and year to the current date if they are not specified.
+costSchema.pre('save', function (next) {
+  const currentData = new Date();
+  if (!this.day) this.day = currentData.getDate();
+  if (!this.month) this.month = currentData.getMonth() + 1;
+  if (!this.year) this.year = currentData.getFullYear();
+  next();
+});
 
 //Define user and cost models
 const User = mongoose.model('User', userSchema);
