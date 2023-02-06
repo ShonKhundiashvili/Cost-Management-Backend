@@ -4,13 +4,13 @@
 
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const connectionString = require('../password_username');
 mongoose.set('strictQuery', true);
 
-const connectionString =
-  'mongodb+srv://natan094:Natan112233@serverside.djqrb8k.mongodb.net/Server-Side-Project?retryWrites=true&w=majority';
+const connect_to_data_base = connectionString.connection;
 
 //Connecting to the database
-mongoose.connect(connectionString, { useNewUrlParser: true });
+mongoose.connect(connect_to_data_base, { useNewUrlParser: true });
 
 const db = mongoose.connection;
 
