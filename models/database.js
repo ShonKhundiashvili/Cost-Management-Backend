@@ -7,10 +7,8 @@ const crypto = require('crypto');
 const connectionString = require('../password_username');
 mongoose.set('strictQuery', true);
 
-const connect_to_data_base = connectionString.connection;
-
 //Connecting to the database
-mongoose.connect(connect_to_data_base, { useNewUrlParser: true });
+mongoose.connect(connectionString), { useNewUrlParser: true };
 
 const db = mongoose.connection;
 
