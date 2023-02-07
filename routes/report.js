@@ -21,12 +21,21 @@ router.get(`/`, function (req, res) {
         month: month,
         user_id: user_id,
       });
-      const report = {};
+      const report = {
+        food: [],
+        housing: [],
+        health: [],
+        other: [],
+        transportation: [],
+        education: [],
+        sport: [],
+      };
       costs.forEach((cost) => {
         const category = cost.category;
-        if (!report[category]) {
-          report[category] = [];
-        }
+        console.log(category);
+        // if (!report[category]) {
+        //   report[category] = [];
+        // }
         report[category].push(cost);
       });
       console.log(report);
