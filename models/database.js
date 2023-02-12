@@ -4,14 +4,15 @@
 
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const password = process.env.PASSWORD;
-const userName = process.env.USER_NAME;
-const connectionString = `mongodb+srv://${userName}:${password}@serverside.djqrb8k.mongodb.net/Server-Side-Project?retryWrites=true&w=majority`;
+require('dotenv').config();
 mongoose.set('strictQuery', true);
 
 //Connecting to the database
 try {
-  mongoose.connect(connectionString), { useNewUrlParser: true };
+  const password = process.env.PASSWORD;
+  const userName = process.env.USER_NAME;
+  const connectionString = `mongodb+srv://${userName}:${password}@serverside.djqrb8k.mongodb.net/Server-Side-Project?retryWrites=true&w=majority`;
+  mongoose.connect(connectionString, { useNewUrlParser: true });
   const db = mongoose.connection;
 
   //Once the database is opened this event listener will be executed

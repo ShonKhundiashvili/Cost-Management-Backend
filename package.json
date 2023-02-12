@@ -9,6 +9,7 @@
     "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
     "express": "^4.16.4",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
