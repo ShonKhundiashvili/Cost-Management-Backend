@@ -10,7 +10,7 @@ const logger = require('morgan');
 const db = require('./models/database');
 
 const indexRouter = require('./routes/index');
-const addCostRouter = require('./routes/addcost');
+const addCostRouter = require('./routes/addCost');
 const aboutRouter = require('./routes/about');
 const reportRouter = require('./routes/report');
 const app = express();
