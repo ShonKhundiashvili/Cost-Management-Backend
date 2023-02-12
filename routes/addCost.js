@@ -4,7 +4,6 @@
 
 const express = require('express');
 const router = express.Router();
-const url = require('url');
 const { Cost, User, Report } = require('../models/database');
 
 router.post('/', async function (req, res) {
@@ -16,15 +15,14 @@ router.post('/', async function (req, res) {
   const day = req.body.day;
   const year = req.body.year;
   const currentData = new Date();
+  const updated_year = year || currentData.getFullYear();
+  const updated_month = month || currentData.getMonth() + 1;
+  const updated_day = day || currentData.getDate();
 
   await User.findOne({ id: user_id })
     .then((user) => {
       if (!user) return res.status(500).send('User not found!');
       else {
-        const updated_year = year || currentData.getFullYear();
-        const updated_month = month || currentData.getMonth() + 1;
-        const updated_day = day || currentData.getDate();
-
         const cost = new Cost({
           user_id: user_id,
           year: updated_year,
@@ -36,7 +34,7 @@ router.post('/', async function (req, res) {
         });
 
         cost.save().catch((error) => {
-          res.status(500).send(error);
+          return res.status(500).send(error);
         });
       }
     })
@@ -46,18 +44,22 @@ router.post('/', async function (req, res) {
 
   const reportExists = await Report.findOne({
     user_id: user_id,
-    year: year,
-    month: month,
+    year: updated_year,
+    month: updated_month,
   });
 
   if (reportExists) {
     reportExists.report[category].push({
-      day: day,
+      day: parseInt(updated_day),
       description: description,
       sum: sum,
     });
     await Report.updateOne(
-      { user_id: user_id, year: year, month: month },
+      {
+        user_id: user_id,
+        year: parseInt(updated_year),
+        month: parseInt(updated_month),
+      },
       { report: reportExists.report }
     );
   }

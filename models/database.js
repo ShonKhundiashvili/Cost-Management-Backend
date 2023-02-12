@@ -5,7 +5,6 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const connectionString = require('../password_username');
-const { json } = require('express');
 mongoose.set('strictQuery', true);
 
 //Connecting to the database
