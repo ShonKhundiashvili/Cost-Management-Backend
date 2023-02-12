@@ -4,17 +4,21 @@
 
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const connectionString = require('../password_username');
+const password = process.env.PASSWORD;
+const userName = process.env.USER_NAME;
+const connectionString = `mongodb+srv://${userName}:${password}@serverside.djqrb8k.mongodb.net/Server-Side-Project?retryWrites=true&w=majority`;
 mongoose.set('strictQuery', true);
 
 //Connecting to the database
 try {
   mongoose.connect(connectionString), { useNewUrlParser: true };
   const db = mongoose.connection;
+
   //Once the database is opened this event listener will be executed
   db.once('open', () => {
     console.log('connected!');
   });
+
   //Creating the user schema and cost schema
   const userSchema = new mongoose.Schema({
     id: String,
